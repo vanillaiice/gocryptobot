@@ -83,7 +83,7 @@ if you want to create one will be shown.
 "percentChangeBuy": "1.0",
 "logDB": true,
 "serverBaseEndpoint": "testnet.binance.vision",
-"wsServerBaseEndpoint": "testnet.binance.com"
+"wsServerBaseEndpoint": "testnet.binance.vision"
 }
 ```
 
