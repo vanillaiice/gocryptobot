@@ -33,7 +33,7 @@ func trySell(botConfig *BotConfig, state *State, client *gobinance.Client, price
 	if err != nil {
 		return err
 	}
-	if percentChange(state.LastBuyPrice, price) >= percentChangeSell {
+	if -percentChange(state.LastBuyPrice, price) >= percentChangeSell {
 		err := orderMarket(botConfig, state, client, gobinance.SideTypeSell, db)
 		if err != nil {
 			return err
