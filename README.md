@@ -7,12 +7,8 @@ This is basically a rewrite of
 
 # Installation
 
-```go
+```sh
 $ go install github.com/vanillaiice/gocryptobot/cmd/gocryptobot@latest
-# or
-$ git clone github.com/vanillaiice/gocryptobot
-$ cd gocryptobot
-$ make
 ```
 
 # Usage
@@ -87,10 +83,30 @@ if you want to create one will be shown.
 }
 ```
 
-# Dev Dependencies
+# Cross Compilation
 
-- [sqlite](https://modules.vlang.io/db.sqlite.html)
-- make (optional)
+First clone the git repo:
+
+```sh
+$ git clone github.com/vanillaiice/gocryptobot
+$ cd gocryptobot
+```
+
+To cross compile for Windows and MacOS on Linux, install
+`mingw-w64-gcc` and `arm-linux-gnueabihf-gcc`, respectively.
+
+Also, please install `make` and `sqlite`.
+
+You can then run the Makefile:
+
+```sh
+# Windows
+$ make Windows
+# MacOS
+$ make Darwin
+# All
+$ make all
+```
 
 # Additional tools
 
