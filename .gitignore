@@ -26,3 +26,7 @@ go.work
 
 # database files
 *.db
+
+Makefile
+
+.cobra.yml
