@@ -24,7 +24,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-var Version = "0.1.0"
+var Version = "0.1.1"
 
 // cfgFile defines the path to the configuration file.
 var cfgFile string

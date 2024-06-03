@@ -64,8 +64,6 @@ func trySell(botCfg *BotCfg, state *State, client *binance.Client, price float32
 		return
 	}
 
-	fmt.Println(pChange)
-
 	return orderMarket(botCfg, state, client, orderSideSell)
 }
 
@@ -117,8 +115,6 @@ func orderMarket(botCfg *BotCfg, state *State, client *binance.Client, side Orde
 		msg := fmt.Sprintf("code: %d, msg: %s", orderResponse.Code, orderResponse.Msg)
 		return errors.New(msg)
 	}
-
-	fmt.Printf("Order response: %+v\n", orderResponse)
 
 	txPrice, err := strconv.ParseFloat(orderResponse.Fills[0].Price, 32)
 	if err != nil {
