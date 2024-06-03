@@ -1,4 +1,4 @@
-package gobinance
+package binance
 
 import (
 	"encoding/json"
@@ -8,6 +8,7 @@ import (
 	"strings"
 )
 
+// ResponseExchangeInfo is the response from the exchange info endpoint.
 type ResponseExchangeInfo struct {
 	Timezone        string            `json:"timezone"`
 	ServerTime      int64             `json:"serverTime"`
@@ -16,6 +17,7 @@ type ResponseExchangeInfo struct {
 	Symbols         []Symbols         `json:"symbols"`
 }
 
+// RateLimits is the rate limits for the exchange info endpoint.
 type RateLimits struct {
 	RateLimitType string `json:"rateLimitType"`
 	Interval      string `json:"interval"`
@@ -23,15 +25,17 @@ type RateLimits struct {
 	Limit         int    `json:"limit"`
 }
 
+// ExchangeFilters is the exchange filters for the exchange info endpoint.
 type ExchangeFilters struct{}
 
+// Symbols is the symbols for the exchange info endpoint.
 type Symbols struct {
 	Symbol                          string    `json:"symbol"`
 	Status                          string    `json:"status"`
 	BaseAsset                       string    `json:"baseAsset"`
 	BaseAssetPrecision              int       `json:"baseAssetPrecision"`
 	QuoteAsset                      string    `json:"quoteAsset"`
-	QuotePrecision                  int       `json:"quoteAssetPrecision"`
+	QuotePrecision                  int       `json:"quotePrecision"`
 	QuoteAssetPrecision             int       `json:"quoteAssetPrecision"`
 	OrderTypes                      []string  `json:"orderTypes"`
 	IcebergAllowed                  bool      `json:"icebergAllowed"`
@@ -47,6 +51,7 @@ type Symbols struct {
 	AllowedSelfTradePreventionModes []string  `json:"allowedSelfTradePreventionModes"`
 }
 
+// Filters is the filters for the exchange info endpoint.
 type Filters struct {
 	FilterType            string `json:"filterType"`
 	PriceFilter           string `json:"priceFilter"`
@@ -74,47 +79,60 @@ type Filters struct {
 	MaxNumAlgoOrders      int    `json:"maxNumAlgoOrders"`
 }
 
-func exchangeInfo(baseURL string, symbols ...string) (ResponseExchangeInfo, error) {
+// exchangeInfo returns the exchange info.
+func exchangeInfo(baseURL string, symbols ...string) (*ResponseExchangeInfo, error) {
 	var response ResponseExchangeInfo
-	req := ""
-	if len(symbols) >= 1 {
-		req = "?" + formSymbolArray(symbols)
+	var s string
+
+	if len(symbols) > 0 {
+		s = "?symbols=" + formSymbolArray(symbols...)
 	}
-	resp, err := http.Get(fmt.Sprintf("https://%s/api/v3/exchangeInfo%s", baseURL, req))
+
+	resp, err := http.Get(fmt.Sprintf("https://%s/api/v3/exchangeInfo%s", baseURL, s))
 	if err != nil {
-		return response, err
+		return nil, err
 	}
 	defer resp.Body.Close()
+
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return response, err
+		return nil, err
 	}
-	err = json.Unmarshal(body, &response)
+
+	if err = json.Unmarshal(body, &response); err != nil {
+		return nil, err
+	}
+
+	return &response, nil
+}
+
+// stepSize returns the step size for the symbol(s).
+func stepSize(baseURL string, symbols ...string) (map[string]string, error) {
+	exchangeInfo, err := exchangeInfo(baseURL, symbols...)
 	if err != nil {
-		return response, err
+		return nil, err
 	}
+
+	response := map[string]string{}
+
+	for _, val := range exchangeInfo.Symbols {
+		response[val.Symbol] = val.Filters[1].StepSize
+	}
+
 	return response, nil
 }
 
-func formSymbolArray(symbols []string) string {
-	symbs := "["
+// formSymbolArray forms an array of symbols from a string.
+func formSymbolArray(symbols ...string) (symbs string) {
+	symbs = "["
+
 	for _, s := range symbols {
 		symbs += fmt.Sprintf("%q,", s)
 	}
+
 	symbs = strings.TrimRight(symbs, ",")
+
 	symbs += "]"
-	return symbs
-}
 
-func stepSize(baseURL string, symbols ...string) (map[string]string, error) {
-	var response map[string]string
-	exchangeInfo, err := exchangeInfo(baseURL, symbols...)
-	if err != nil {
-		return response, err
-	}
-
-	for _, i := range exchangeInfo.Symbols {
-		response[i.Symbol] = i.Filters[1].StepSize
-	}
-	return response, nil
+	return
 }

@@ -1,0 +1,13 @@
+base: "BTC"
+quote: "USDT"
+trading-balance: 0.0015
+state-file: "state.json"
+first-tx: "buy"
+percent-change-sell: 0.50
+percent-change-buy: 0.25
+server-base-endpoint: "testnet.binance.vision"
+ws-server-base-endpoint: "testnet.binance.vision"
+save-receipt: true
+db-backend: "sqlite"
+db-url: "receipts.db"
+log-level: "info"
