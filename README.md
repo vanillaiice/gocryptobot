@@ -44,11 +44,11 @@ API_KEY = "<YOUR API KEY>"
 ```yaml
 base: "BTC"
 quote: "USDT"
-trading-balance: "0.5"
+trading-balance: 0.5
 state-file: "state.json"
 first-tx: "buy"
-percent-change-sell: "0.50"
-percent-change-buy: "0.25"
+percent-change-sell: 0.50
+percent-change-buy: 0.25
 server-base-endpoint: "testnet.binance.vision"
 ws-server-base-endpoint: "testnet.binance.vision"
 save-receipt: true
@@ -59,7 +59,11 @@ log-level: "info"
 
 # Contributing
 
-## bugs, issues, feature requests, etc.
+## issues, features
+
+Please create a github issue.
+
+## bugs
 
 Please fork the project, make your changes and submit a pull request.
 
