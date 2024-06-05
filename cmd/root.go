@@ -24,7 +24,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-var Version = "0.1.1"
+const version = "0.1.1"
 
 // cfgFile defines the path to the configuration file.
 var cfgFile string
@@ -32,7 +32,7 @@ var cfgFile string
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:     "gocryptobot",
-	Version: Version,
+	Version: version,
 	Short:   "Simple cryptocurrency trading bot",
 	Long:    `Simple cryptocurrency trading bot using the Binance API and Websocket.`,
 }
