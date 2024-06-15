@@ -59,11 +59,11 @@ func trade(botCfg *BotCfg, state *State, client *binance.Client, c <-chan pricew
 				return fmt.Errorf("invalid first tx: %s", botCfg.FirstTx)
 			}
 		case txBuy:
-			if err = trySell(botCfg, state, client, priceData.Price*priceMultiplier); err != nil {
+			if err = trySell(botCfg, state, client, priceData.Price*priceMultiplierSell); err != nil {
 				return
 			}
 		case txSell:
-			if err = tryBuy(botCfg, state, client, priceData.Price*priceMultiplier); err != nil {
+			if err = tryBuy(botCfg, state, client, priceData.Price*priceMultiplierBuy); err != nil {
 				return
 			}
 		default:

@@ -162,5 +162,8 @@ var receiptsDb db.DB
 // symbolUpper is the symbol in uppercase.
 var symbolUpper string
 
-// priceMultiplier is a multiplier that accounts for the 0.1% trading fee.
-const priceMultiplier float32 = 1.001
+// priceMultiplierSell is a multiplier that accounts for the 0.1% trading fee when selling.
+const priceMultiplierSell float32 = 1 + 0.1/100
+
+// priceMultiplierBuy is a multiplier that accounts for the 0.1% trading fee when buying.
+const priceMultiplierBuy float32 = 1 - 0.1/100
